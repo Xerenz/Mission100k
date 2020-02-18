@@ -121,11 +121,10 @@ var error_found = false;
     var map;
     var mark;
     var lineCoords = [];
-    var image = 'hot-balloon-icon.png';
+    var image = './../hot-balloon-icon.png';
 
     var initialize = function() {
-      map  = new google.maps.Map(document.getElementById('map-canvas'), {center:{lat:lat,lng:lng},zoom:14//, mapTypeId: 'satellite'
-      });
+      map  = new google.maps.Map(document.getElementById('map-canvas'), {center:{lat:lat,lng:lng},zoom:14});
       mark = new google.maps.Marker({
         position:{lat:lat, lng:lng},
          map:map,
