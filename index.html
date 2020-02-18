@@ -2,22 +2,30 @@
 <html>
 <head>
 	<title>Mission100K</title>
-</head>
-<body>
-
-
-<script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.19.0.min.js"></script>
+	<script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.19.0.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-app.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript">
+	</script>
+</head>
+	<body>
 
-<!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
+		<div class="container">
+	    	<h1>Mission 100K Feet</h1>
+	    	<h2>Live Tracker</h2>
+	    	<div id="map-canvas" style="width:600px;height:400px"></div>
+	    </div>
 
-<script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-firestore.js"></script>
+		<!-- The core Firebase JS SDK is always required and must be listed first -->
+		<script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-app.js"></script>
 
-<script type="text/javascript" src="js/main.js"></script>
-</body>
+		<!-- TODO: Add SDKs for Firebase products that you want to use
+		     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+		<script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-firestore.js"></script>
+
+		<script type="text/javascript" src="js/main.js"></script>
+
+		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCRAzB-3zfz2lOkBGlVdL3msdr5eHVvdbA&callback=initialize"></script>
+	</body>
 </html>
