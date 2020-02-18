@@ -7,12 +7,17 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 
 
-cred = credentials.Certificate('./ServiceAccountKey.json')
+cred = credentials.Certificate('./../ServiceAccountKey.json')
 default_app = firebase_admin.initialize_app(cred)
 db = firestore.client()
 
+# no. of documents already parsed
+global doc_count
+doc_count = 0
+
 def parse():
-    data = open('mission_flight/raw_data.txt', encoding='utf-8', errors='ignore')
+    global doc_count
+    data = open('./../mission_flight/raw_data.txt', encoding='utf-8', errors='ignore')
     def is_number(s):
         try:
             float(s)
@@ -50,7 +55,7 @@ def parse():
     for index, coord in enumerate(coordinates[:-1]):
         if (abs(coord[0] - coordinates[index + 1][0]) <= 0.004 and (abs(coord[1] - coordinates[index + 1][1]) <= 0.004)):
             parse_coordinates.append(coord)
-    print(len(parse_coordinates))
+    # print(len(parse_coordinates))
     
     
     # improvements to be added
@@ -64,26 +69,30 @@ def parse():
     csv_file = pd.DataFrame(pd.read_csv('main_coordinates.csv'))
     csv_file.to_json('main_coords.json', orient='records', indent=4)
 
+
+
+    doc_ref = db.collection(u'main_coordinates')
+    with open('main_coords.json') as f:
+        data = json.load(f)
+
+    
+    for index, element in enumerate(data):
+        # add if already exists check
+        if index >= doc_count:
+            element["index"] = index
+            doc = doc_ref.document(str(index))
+            doc.set(element)
+            doc_count += 1
+    print('.', end='')
+
 parse()
-
-doc_ref = db.collection(u'main_coordinates')
-with open('main_coords.json') as f:
-    data = json.load(f)
-
-for index, element in enumerate(data):
-    # add if already exists check
-    element["index"] = index
-    doc_ref.add(element)
-    
-schedule.every(5).seconds.do(parse)
+# schedule.every(5).seconds.do(parse)
 
 
-while True:
+# while True:
 
-    schedule.run_pending()
-    time.sleep(1)
+#     schedule.run_pending()
+#     time.sleep(1)
     
 
 
-    
-    
