@@ -14,7 +14,7 @@ db = firestore.client()
 # no. of documents already parsed
 global doc_count
 doc_count = 0
-
+# time_ = time.time()
 def parse():
     global doc_count
     data = open('./../mission_flight/raw_data.txt', encoding='utf-8', errors='ignore')
@@ -30,7 +30,6 @@ def parse():
     coordinates = []
     index_line = 0
     for each_line in content:
-
         try:
             _, link, _ = each_line.split("'")
 
@@ -38,7 +37,6 @@ def parse():
             _, coords = location.split(":")
             lat_, long_ = coords.split(",")
             
-
             if is_number(lat_) and is_number(long_):
                 lat_ = float(lat_)
                 long_ = float(long_)
@@ -55,28 +53,18 @@ def parse():
     for index, coord in enumerate(coordinates[:-1]):
         if (abs(coord[0] - coordinates[index + 1][0]) <= 0.004 and (abs(coord[1] - coordinates[index + 1][1]) <= 0.004)):
             parse_coordinates.append(coord)
-    # print(len(parse_coordinates))
+
+    coord_dict = {}
+    coord_list = []
+    for coord in parse_coordinates:
+        coord_dict["LAT"] = coord[0]
+        coord_dict["LONG"] = coord[1]
+        coord_list.append(coord_dict)
     
+
     
-    # improvements to be added
-    with open('main_coordinates.csv', mode='w') as coords_file:
-        coord_writer = csv.writer(coords_file)
-        coord_writer.writerow(['LAT', 'LONG'])
-        for coord in parse_coordinates:
-            coord_writer.writerow([coord[0], coord[1]])
-            
-    # converting the files to csv
-    csv_file = pd.DataFrame(pd.read_csv('main_coordinates.csv'))
-    csv_file.to_json('main_coords.json', orient='records', indent=4)
-
-
-
     doc_ref = db.collection(u'main_coordinates')
-    with open('main_coords.json') as f:
-        data = json.load(f)
-
-    
-    for index, element in enumerate(data):
+    for index, element in enumerate(coord_list):
         # add if already exists check
         if index >= doc_count:
             element["index"] = index
@@ -86,7 +74,10 @@ def parse():
     print('.', end='')
 
 parse()
+now = time.time()
+# print(now - time_)
 # schedule.every(5).seconds.do(parse)
+
 
 
 # while True:
